@@ -1,0 +1,26 @@
+# Core Flask Framework and Extensions
+Flask==3.0.3                # Web framework for building the application
+Werkzeug==3.0.3            # WSGI web application library used by Flask
+Jinja2==3.1.4              # Template engine for Flask
+itsdangerous==2.2.0        # Secure signing of data for Flask
+blinker==1.8.2             # Signal support for Flask
+click==8.1.7               # Command-line interface creation utility
+MarkupSafe==2.1.5          # Safely handle HTML/XML markup
+
+# Machine Learning and Scientific Computing
+numpy>=2.1.2               # Numerical computing library
+scipy>=1.14.1              # Scientific computing library
+scikit-learn>=1.5.2        # Machine learning library
+joblib==1.4.2              # Library for parallel processing
+threadpoolctl==3.5.0       # Thread pool control for scikit-learn
+faiss-cpu>=1.7.4           # Vector similarity search (CPU version)
+
+# NLP and Deep Learning (for Chatbot)
+sentence-transformers>=2.2.2    # BERT embeddings for text similarity
+torch                          # PyTorch for deep learning (latest compatible)
+langchain>=0.1.0              # LangChain core functionality
+langchain-community>=0.0.10    # Community LLM integrations
+langchain-core>=0.1.0         # Core LangChain functionality
+langchain-ollama>=0.0.3       # Ollama integration for LangChain
+requests>=2.31.0              # HTTP library for API calls
+tqdm>=4.66.1                  # Progress bar for ML operations
