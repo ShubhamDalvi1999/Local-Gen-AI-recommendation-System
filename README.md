@@ -1,4 +1,4 @@
-##Classy Classic Book(CCB)
+Classy Classic Book(CCB)
 
 ##Table of contents
 
