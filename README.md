@@ -1,6 +1,6 @@
 Classy Classic Book(CCB)
 
-##Table of contents
+Table of contents
 
 - Introduction
 - Technologies
