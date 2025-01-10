@@ -1,5 +1,8 @@
 Classy Classic Book(CCB)
 
+The system combines both approaches:
+Questionnaire → SVM Classifier → Direct book recommendation
+Chat Interface → Vector Similarity → Multiple similar book recommendations
 Table of contents
 
 - Introduction
