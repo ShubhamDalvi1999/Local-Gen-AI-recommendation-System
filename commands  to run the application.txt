@@ -1,0 +1,11 @@
+.\llm-book\Scripts\activate
+
+
+pip install -r requirements.txt
+
+python app_CCB.py
+
+
+from langchain_ollama import OllamaLLM
+pip show langchain-community
+pip show langchain-ollama

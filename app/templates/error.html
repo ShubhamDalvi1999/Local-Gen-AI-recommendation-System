@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Classy Books</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                <li><a href="{{ url_for('main.about_project') }}">About Project</a></li>
+                <li><a href="{{ url_for('main.contacts') }}">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="error-container">
+        <div class="error-box">
+            <h1>Oops!</h1>
+            <p>{{ message if message else "Something went wrong. Please try again." }}</p>
+            <div class="error-actions">
+                <a href="{{ url_for('form') }}" class="button">Back to Survey</a>
+                <a href="{{ url_for('index') }}" class="button secondary">Go Home</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Classy Books. All rights reserved.</p>
+    </footer>
+</body>
+</html> 

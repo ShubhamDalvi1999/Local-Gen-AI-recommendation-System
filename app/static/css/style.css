@@ -1,0 +1,255 @@
+/* Global Styles */
+body {
+    font-family: 'Playfair Display', serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+header {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem 0;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 1rem;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #4f46e5;
+}
+
+footer {
+    background-color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+}
+
+/* Form Styles */
+.form-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-intro {
+    text-align: center;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.question-group {
+    margin-bottom: 1.5rem;
+}
+
+.question-group h3 {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #fff;
+}
+
+select:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+}
+
+.submit-btn {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    background-color: #4f46e5;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #4338ca;
+}
+
+/* Error Page Styles */
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.error-box {
+    text-align: center;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    max-width: 500px;
+}
+
+.error-box h1 {
+    color: #ef4444;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Recommendation Page Styles */
+.recommendation-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+.recommendation-box {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.book-recommendation {
+    margin: 2rem 0;
+}
+
+.book-recommendation h2 {
+    color: #1f2937;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.book-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.button:not(.secondary) {
+    background-color: #4f46e5;
+    color: #fff;
+}
+
+.button.secondary {
+    background-color: #fff;
+    color: #4f46e5;
+    border: 1px solid #4f46e5;
+}
+
+.button:hover {
+    transform: translateY(-1px);
+}
+
+.additional-options {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.additional-options h3 {
+    color: #4b5563;
+    margin-bottom: 1rem;
+}
+
+.chat-button {
+    background-color: #059669;
+    color: #fff;
+}
+
+.chat-button:hover {
+    background-color: #047857;
+}
+
+/* Enhanced Recommendation Page Styles */
+.book-details {
+    margin: 2rem 0;
+    text-align: left;
+}
+
+.subtitle {
+    color: #4b5563;
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+.book-meta {
+    background-color: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.book-meta p {
+    margin: 0.5rem 0;
+    color: #4b5563;
+}
+
+.book-meta .authors {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.book-meta .rating {
+    color: #d97706;
+    font-weight: 500;
+}
+
+.book-description {
+    margin-top: 2rem;
+}
+
+.book-description h4 {
+    color: #1f2937;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.book-description p {
+    color: #4b5563;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+} 

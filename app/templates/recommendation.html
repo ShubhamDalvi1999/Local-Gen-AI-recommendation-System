@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Book Recommendation - Classy Books</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                <li><a href="{{ url_for('main.about_project') }}">About Project</a></li>
+                <li><a href="{{ url_for('main.contacts') }}">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="recommendation-container">
+        <div class="recommendation-box">
+            <h1>Your Perfect Classic Book Match</h1>
+            
+            <div class="book-recommendation">
+                <h2>{{ book_info.title }}</h2>
+                {% if book_info.subtitle %}
+                <h3 class="subtitle">{{ book_info.subtitle }}</h3>
+                {% endif %}
+                
+                <div class="book-details">
+                    <div class="book-meta">
+                        <p class="authors">By {{ book_info.authors }}</p>
+                        <p class="categories">Genre: {{ book_info.categories }}</p>
+                        <p class="published">Published: {{ book_info.published_year }}</p>
+                        <p class="rating">Rating: {{ "%.1f"|format(book_info.average_rating) }} ⭐</p>
+                        <p class="pages">Length: {{ book_info.num_pages }} pages</p>
+                    </div>
+                    
+                    <div class="book-description">
+                        <h4>About the Book</h4>
+                        <p>{{ book_info.description }}</p>
+                    </div>
+                </div>
+
+                <div class="book-actions">
+                    <a href="{{ book_info.link }}" class="button" target="_blank">View on Amazon</a>
+                    <a href="{{ url_for('form') }}" class="button secondary">Try Another Survey</a>
+                </div>
+            </div>
+
+            <div class="additional-options">
+                <h3>Want More Recommendations?</h3>
+                <p>Try our new AI-powered chat interface for personalized book discussions and recommendations!</p>
+                <a href="{{ url_for('chat.chat_interface') }}" class="button chat-button">Chat with Book AI</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Classy Books. All rights reserved.</p>
+    </footer>
+</body>
+</html> 

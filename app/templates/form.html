@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Preference Survey - Classy Books</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                <li><a href="{{ url_for('main.about_project') }}">About Project</a></li>
+                <li><a href="{{ url_for('main.contacts') }}">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="form-container">
+        <h1>Book Preference Survey</h1>
+        <p class="form-intro">Answer these questions to get your personalized classic book recommendation!</p>
+
+        <form action="{{ url_for('form') }}" method="post">
+            <!-- Question 1 -->
+            <div class="question-group">
+                <h3>1. What's your preferred reading pace?</h3>
+                <select name="option1" required>
+                    <option value="on">Please select...</option>
+                    <option value="1">Fast-paced and exciting</option>
+                    <option value="2">Moderate and steady</option>
+                    <option value="3">Slow and contemplative</option>
+                </select>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-group">
+                <h3>2. How do you feel about complex characters?</h3>
+                <select name="option2" required>
+                    <option value="on">Please select...</option>
+                    <option value="1">Love deeply complex characters</option>
+                    <option value="2">Prefer balanced character development</option>
+                    <option value="3">Like straightforward characters</option>
+                </select>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-group">
+                <h3>3. What's your tolerance for descriptive passages?</h3>
+                <select name="option3" required>
+                    <option value="on">Please select...</option>
+                    <option value="1">Love rich, detailed descriptions</option>
+                    <option value="2">Moderate amount is fine</option>
+                    <option value="3">Prefer minimal description</option>
+                </select>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-group">
+                <h3>4. What themes interest you most?</h3>
+                <select name="option4" required>
+                    <option value="on">Please select...</option>
+                    <option value="1">Love and relationships</option>
+                    <option value="2">Social commentary</option>
+                    <option value="3">Adventure and discovery</option>
+                    <option value="4">Philosophy and morality</option>
+                </select>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-group">
+                <h3>5. How do you feel about historical settings?</h3>
+                <select name="option5" required>
+                    <option value="on">Please select...</option>
+                    <option value="1">Love historical detail</option>
+                    <option value="2">Don't mind either way</option>
+                    <option value="3">Prefer timeless settings</option>
+                </select>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question-group">
+                <h3>6. What's your preferred story length?</h3>
+                <select name="option6" required>
+                    <option value="on">Please select...</option>
+                    <option value="1">Short (under 300 pages)</option>
+                    <option value="2">Medium (300-500 pages)</option>
+                    <option value="3">Long (500+ pages)</option>
+                </select>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="question-group">
+                <h3>7. How do you feel about romantic subplots?</h3>
+                <select name="option7" required>
+                    <option value="on">Please select...</option>
+                    <option value="1">Essential to the story</option>
+                    <option value="2">Nice but not necessary</option>
+                    <option value="3">Prefer minimal romance</option>
+                </select>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question-group">
+                <h3>8. What writing style do you prefer?</h3>
+                <select name="option8" required>
+                    <option value="on">Please select...</option>
+                    <option value="1">Flowery and poetic</option>
+                    <option value="2">Clear and straightforward</option>
+                    <option value="3">Witty and humorous</option>
+                </select>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="question-group">
+                <h3>9. How do you feel about tragic elements?</h3>
+                <select name="option9" required>
+                    <option value="on">Please select...</option>
+                    <option value="1">Bring on the tragedy</option>
+                    <option value="2">Some is fine</option>
+                    <option value="3">Prefer happy endings</option>
+                </select>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="question-group">
+                <h3>10. What's your preferred narrative perspective?</h3>
+                <select name="option10" required>
+                    <option value="on">Please select...</option>
+                    <option value="1">First person</option>
+                    <option value="2">Third person limited</option>
+                    <option value="3">Third person omniscient</option>
+                </select>
+            </div>
+
+            <!-- Question 11 -->
+            <div class="question-group">
+                <h3>11. How do you feel about philosophical discussions?</h3>
+                <select name="option11" required>
+                    <option value="on">Please select...</option>
+                    <option value="1">Love deep philosophical content</option>
+                    <option value="2">Moderate amount is good</option>
+                    <option value="3">Prefer focus on story</option>
+                </select>
+            </div>
+
+            <!-- Question 12 -->
+            <div class="question-group">
+                <h3>12. What kind of ending do you prefer?</h3>
+                <select name="option12" required>
+                    <option value="on">Please select...</option>
+                    <option value="1">Clear resolution</option>
+                    <option value="2">Open to interpretation</option>
+                    <option value="3">Surprise endings</option>
+                </select>
+            </div>
+
+            <!-- Question 13 -->
+            <div class="question-group">
+                <h3>13. How important is humor in your reading?</h3>
+                <select name="option13" required>
+                    <option value="on">Please select...</option>
+                    <option value="1">Very important</option>
+                    <option value="2">Nice to have</option>
+                    <option value="3">Not important</option>
+                </select>
+            </div>
+
+            <button type="submit" class="submit-btn">Get My Recommendation</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Classy Books. All rights reserved.</p>
+    </footer>
+</body>
+</html> 

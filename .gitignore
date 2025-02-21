@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+llm-book/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Project specific
+data/
+data/*.db
+data/*.pickle
+logs/*.log
+.env
+conversation_history.json
+
+# Misc
+.DS_Store
+Thumbs.db 
+
+# Documentation
+docs/
+
+# Model files and large data
+*.pickle
+*.model
+*.bin
+*.h5
+*.hdf5
+*.pkl
+data/models/
+classifier.pickle
+
+# Data directories
+data/books/
+data/book_embeddings/
+data/book_embeddings_faiss/
+data/book_embeddings_faiss_index/
+data/book_embeddings_faiss_index_2/
+data/book_embeddings_faiss_index_3/
+data/book_embeddings_faiss_index_4/
+
+# Environment variables
+.env
+.env.*
