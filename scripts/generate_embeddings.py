@@ -6,13 +6,14 @@ This script uses Ollama to generate embeddings and stores them in Milvus.
 import sys
 import json
 import logging
+import logging.config
 from pathlib import Path
 from tqdm import tqdm
 import numpy as np
 import time
 import os
 import requests
-from typing import Dict
+from typing import Dict, List
 from dotenv import load_dotenv
 
 # Add the parent directory to the Python path
@@ -23,12 +24,10 @@ from app.models.book import Book
 from app.core.config import DATABASE, OLLAMA, LOGGING, MILVUS_CONNECT_CONFIG
 from app.services.milvus_store import MilvusVectorStore
 
-# Configure logging
-logging.basicConfig(
-    level=LOGGING['loggers']['']['level'],
-    format=LOGGING['formatters']['standard']['format']
-)
+# Initialize logging with the configuration from config.py
+logging.config.dictConfig(LOGGING)
 logger = logging.getLogger(__name__)
+logger.debug("Logging initialized for generate_embeddings.py")
 
 def check_ollama_service():
     """Check if Ollama service is running and the model is available"""
@@ -65,6 +64,24 @@ def check_ollama_service():
         print("Please start Ollama by running this command in a separate terminal:")
         print(f"    ollama run {OLLAMA['MODEL']}")
         return False
+
+def get_embedding(text: str) -> List[float]:
+    """Get embedding for a text using Ollama API"""
+    ollama_host = OLLAMA['HOST']
+    ollama_port = OLLAMA['PORT']
+    base_url = f'http://{ollama_host}:{ollama_port}'
+    
+    try:
+        response = requests.post(
+            f"{base_url}/api/embeddings",
+            json={"model": OLLAMA['MODEL'], "prompt": text},
+            timeout=30
+        )
+        response.raise_for_status()
+        return response.json()['embedding']
+    except Exception as e:
+        logger.error(f"Failed to get embedding: {e}")
+        raise
 
 def generate_embeddings():
     """Generate embeddings for all books and store in Milvus."""
@@ -127,7 +144,7 @@ def generate_embeddings():
         start_time = time.time()
         
         # Process books in batches
-        batch_size = 100
+        batch_size = 5  # Reduced batch size to match Milvus batch size
         
         # Overall progress bar
         with tqdm(total=total_count, desc="Processing Books", unit="book") as pbar:
@@ -135,21 +152,27 @@ def generate_embeddings():
                 batch = books[i:i + batch_size]
                 
                 try:
-                    # Add books to Milvus (embeddings will be generated automatically)
-                    milvus_store.add_books(batch)
+                    # Generate embeddings for the batch
+                    batch_embeddings = []
+                    for book in batch:
+                        # Combine relevant text fields for embedding
+                        text_for_embedding = f"{book['title']} {book['description']} {book['authors']} {book['categories']}"
+                        embedding = get_embedding(text_for_embedding)
+                        batch_embeddings.append(embedding)
+                    
+                    # Add books to Milvus with their embeddings
+                    milvus_store.add_books(batch, batch_embeddings)
                     successful_uploads += len(batch)
                     
                     # Get collection information after each batch
                     try:
-                        num_entities = milvus_store.client.get_collection_stats(
-                            collection_name=milvus_store.collection_name
-                        ).get('row_count', 0)
+                        num_entities = milvus_store.collection.num_entities
                         logger.info(f"Current collection size: {num_entities} entities")
                     except Exception as e:
                         logger.warning(f"Could not get collection stats: {e}")
                     
                 except Exception as e:
-                    logger.error(f"Failed to process batch: {str(e)}")
+                    logger.error(f"Failed to process batch: {e}")
                     failed_uploads += len(batch)
                     continue
                 finally:

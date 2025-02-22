@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 import logging
+from dataclasses import dataclass
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -16,6 +17,15 @@ load_dotenv()
 
 # Base directory of the project
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+@dataclass
+class MilvusSettings:
+    """Settings for Milvus connection and collection"""
+    connection_uri: str
+    collection_name: str = "book_embeddings"
+    dimension: int = 384
+    connection_alias: str = "default"
+    timeout: int = 30
 
 # Database settings
 DATABASE = {
@@ -30,52 +40,15 @@ OLLAMA = {
     'HOST': os.getenv('OLLAMA_HOST', 'localhost'),
     'PORT': os.getenv('OLLAMA_PORT', '11434'),
     'MODEL': os.getenv('OLLAMA_MODEL', 'llama3.2:3b'),
-    'DIMENSION': 384
+    'DIMENSION': 3072
 }
 
 OLLAMA_HOST = OLLAMA['HOST']
 OLLAMA_PORT = OLLAMA['PORT']
 
-# Data files
-DATA_FILES = {
-    'BOOKS_CSV': os.path.join(BASE_DIR, 'data', 'books', 'data.csv')
-}
-
-# Logging configuration
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'standard': {
-            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
-        },
-    },
-    'handlers': {
-        'default': {
-            'level': 'INFO',
-            'formatter': 'standard',
-            'class': 'logging.StreamHandler',
-        },
-        'file': {
-            'level': 'INFO',
-            'formatter': 'standard',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'app.log'),
-            'mode': 'a',
-        },
-    },
-    'loggers': {
-        '': {
-            'handlers': ['default', 'file'],
-            'level': 'INFO',
-            'propagate': True
-        }
-    }
-}
-
-# Validate and load Milvus configuration
-def _validate_milvus_config():
-    """Validate and prepare Milvus configuration."""
+# Validate and prepare Milvus settings
+def get_milvus_settings() -> MilvusSettings:
+    """Get validated Milvus settings from environment variables."""
     host = os.getenv('MILVUS_HOST')
     if not host:
         raise ValueError("MILVUS_HOST environment variable is not set")
@@ -84,49 +57,92 @@ def _validate_milvus_config():
     if not any(host.startswith(proto) for proto in ['https://', 'http://', 'tcp://']):
         host = f'https://{host}'
     
-    port = os.getenv('MILVUS_PORT', '443')  # Default to HTTPS port
-    token = os.getenv('MILVUS_TOKEN')
-    if not token:
-        raise ValueError("MILVUS_TOKEN environment variable is not set")
-    
-    # Common SSL settings
-    ssl_settings = {
-        'verify': True,  # Enable SSL verification
-        'secure': True,
-        'timeout': 30
-    }
-    
-    # Configuration for MilvusClient
-    client_config = {
-        'uri': host,
-        'token': str(token),
-        **ssl_settings
-    }
-    
-    # Configuration for connections.connect()
-    connect_config = {
-        'host': host,
-        'port': str(port),
-        'token': str(token),
-        'user': '',  # Empty string for cloud deployments
-        'password': '',  # Empty string for cloud deployments
-        **ssl_settings
-    }
-    
-    return client_config, connect_config
+    return MilvusSettings(
+        connection_uri=host,
+        collection_name="book_embeddings",
+        dimension=OLLAMA['DIMENSION'],
+        connection_alias="default",
+        timeout=30
+    )
 
+# Initialize Milvus settings
 try:
-    MILVUS_CLIENT_CONFIG, MILVUS_CONNECT_CONFIG = _validate_milvus_config()
-    logger.info(f"Milvus configuration loaded successfully (Host: {MILVUS_CLIENT_CONFIG['uri']})")
+    MILVUS_SETTINGS = get_milvus_settings()
+    logger.info(f"Milvus settings loaded successfully (Host: {MILVUS_SETTINGS.connection_uri})")
 except Exception as e:
-    logger.error(f"Failed to load Milvus configuration: {e}")
+    logger.error(f"Failed to load Milvus settings: {e}")
     raise
 
-# For backward compatibility
-MILVUS_HOST = MILVUS_CLIENT_CONFIG['uri']
-MILVUS_PORT = MILVUS_CONNECT_CONFIG['port']
-MILVUS_TOKEN = MILVUS_CLIENT_CONFIG['token']
-MILVUS_CONFIG = MILVUS_CLIENT_CONFIG  # Default to client config for existing code
+# Milvus connection configuration
+MILVUS_CONNECT_CONFIG = {
+    'host': MILVUS_SETTINGS.connection_uri,
+    'port': '443',  # Default port for cloud
+    'token': os.getenv('MILVUS_TOKEN'),
+    'secure': True,  # Always true for cloud
+    'timeout': MILVUS_SETTINGS.timeout
+}
+
+# Data files
+DATA_FILES = {
+    'BOOKS_CSV': os.path.join(BASE_DIR, 'data', 'books', 'data.csv')
+}
+
+# Logging configuration with enhanced debugging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s][%(name)s:%(lineno)d] %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+        'detailed': {
+            'format': '%(asctime)s [%(levelname)s][%(name)s:%(funcName)s:%(lineno)d] %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'formatter': 'detailed',
+            'class': 'logging.StreamHandler',
+            'stream': 'ext://sys.stdout'
+        },
+        'file': {
+            'level': 'DEBUG',
+            'formatter': 'detailed',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'milvus_debug.log'),
+            'mode': 'w'
+        }
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
+        'app': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'app.services': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'app.services.milvus_store': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'sqlalchemy': {'level': 'WARNING'},
+        'uvicorn': {'level': 'WARNING'},
+        'uvicorn.error': {'level': 'WARNING'},
+        'milvus': {'level': 'DEBUG'}
+    }
+}
 
 # RAG configuration
 RAG_CONFIG = {
